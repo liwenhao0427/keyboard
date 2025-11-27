@@ -735,10 +735,11 @@ export class GameEngine {
 
       // Enemies
       this.enemies.forEach(e => {
-          this.ctx.save();
-          
+          // Explicit Control
           if (e.hitFlashTime > 0) {
               this.ctx.globalAlpha = 0.6;
+          } else {
+              this.ctx.globalAlpha = 1.0;
           }
 
           this.ctx.font = '48px Arial';
@@ -746,7 +747,8 @@ export class GameEngine {
           this.ctx.textBaseline = 'middle';
           this.ctx.fillText(e.emoji, e.x, e.y);
 
-          this.ctx.restore();
+          // Hard Reset
+          this.ctx.globalAlpha = 1.0;
 
           const hpPct = e.hp / e.maxHp;
           this.ctx.fillStyle = 'rgba(255,255,255,0.2)';
