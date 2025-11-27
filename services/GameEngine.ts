@@ -1,3 +1,5 @@
+
+
 import { AmmoItem, AmmoType, PlayerStats, AmmoBayState, WeaponClass, Enemy, Projectile, Structure, LootDrop, FloatingText } from '../types';
 import { ROW_COUNT, BACKGROUND_SLANG, GRID_TOP_OFFSET, WAVE_CONFIG, ENEMY_DATA } from '../constants';
 
@@ -342,7 +344,7 @@ export class GameEngine {
           life: 0, maxLife: maxLife, 
           sourceId: 'player', crit: isCrit,
           markedForDeletion: false, hitList: [], 
-          knockback: item.knockback || 0
+          knockback: (item.knockback || 0) + this.stats.globalKnockback
       });
   }
 
@@ -582,6 +584,9 @@ export class GameEngine {
       const targetX = 250;
       const targetY = 60;
       
+      const baseRange = 50;
+      const pickupRange = baseRange * (1 + this.stats.pickupRange);
+      
       this.loot.forEach(l => {
           l.age = (l.age || 0) + dt;
 
@@ -598,7 +603,7 @@ export class GameEngine {
               // Accelerate towards HUD
               const speed = 2000; // Pixels per second
 
-              if (dist < 50) {
+              if (dist < pickupRange) {
                   l.markedForDeletion = true;
                   this.callbacks.onGainLoot(l.xp, l.gold);
               } else {
@@ -729,25 +734,19 @@ export class GameEngine {
       });
 
       // Enemies
-      this.ctx.globalAlpha = 1.0; // Ensure transparency is reset for enemies
       this.enemies.forEach(e => {
-          // Always draw the emoji first so it is never invisible
+          this.ctx.save();
+          
+          if (e.hitFlashTime > 0) {
+              this.ctx.globalAlpha = 0.6;
+          }
+
           this.ctx.font = '48px Arial';
+          this.ctx.textAlign = 'center';
+          this.ctx.textBaseline = 'middle';
           this.ctx.fillText(e.emoji, e.x, e.y);
 
-          if (e.hitFlashTime > 0) {
-              // Draw white overlay for hit impact
-              this.ctx.save();
-              this.ctx.translate(e.x, e.y);
-              
-              // White circle overlay with opacity
-              this.ctx.beginPath();
-              this.ctx.arc(0, 0, 30, 0, Math.PI*2);
-              this.ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-              this.ctx.fill();
-
-              this.ctx.restore();
-          }
+          this.ctx.restore();
 
           const hpPct = e.hp / e.maxHp;
           this.ctx.fillStyle = 'rgba(255,255,255,0.2)';
@@ -764,6 +763,8 @@ export class GameEngine {
           this.ctx.translate(p.x, p.y);
           const angle = Math.atan2(p.vy, p.vx);
           this.ctx.rotate(angle);
+          this.ctx.textAlign = 'center';
+          this.ctx.textBaseline = 'middle';
           this.ctx.fillText(p.emoji, 0, 0);
           this.ctx.restore();
       });

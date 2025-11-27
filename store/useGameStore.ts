@@ -144,17 +144,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
   gainLoot: (xp, gold) => {
       let result = { leveledUp: false, levels: 0 };
       set((state) => {
-          let newXp = state.stats.xp + xp;
-          // Sync Gold with XP gain (plus any direct gold)
-          // If gold param is just the raw value drop, we usually just add it.
-          // But user requirement: "Get experience will sync corresponding value of economy".
-          // So if we pick up XP, we get Gold = XP. The 'gold' param here comes from LootDrop.
-          // LootDrop has `xp` and `gold` values. 
-          // So we should just add `xp` to `gold` as well?
-          // Or does `gold` param already include it? The `LootDrop` handles values.
-          // The prompt says "Acquiring XP will synchronously acquire corresponding amount of economy".
-          // So we add `xp` to the gold total.
-          let newGold = state.stats.gold + gold + xp;
+          // Apply XP modifier
+          const xpWithBonus = xp * (1 + state.stats.xpGain);
+          let newXp = state.stats.xp + xpWithBonus;
+          
+          // Sync economy (Gold) with XP gain (including bonus)
+          // Also add raw gold drop
+          let newGold = state.stats.gold + gold + xpWithBonus;
           
           let newLevel = state.stats.level;
           let newMaxXp = state.stats.maxXp;

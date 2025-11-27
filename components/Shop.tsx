@@ -1,3 +1,5 @@
+
+
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ShopItem, PlayerStats, AmmoItem, ItemUpgrade, GamePhase } from '../types';
@@ -41,6 +43,9 @@ export const Shop: React.FC<ShopProps> = ({ stats, currentWave, onBuyWeapon, onB
         let basePrice = isWeapon ? 20 : 15;
         if (template.rarity === 'RARE') basePrice *= 2;
         if (template.rarity === 'EPIC') basePrice *= 4;
+
+        // Apply Discount
+        basePrice = Math.max(1, Math.floor(basePrice * (1 - stats.shopDiscount)));
 
         newItems.push({
             id: uuidv4(),

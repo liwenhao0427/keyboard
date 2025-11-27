@@ -23,10 +23,14 @@ export const INITIAL_STATS: PlayerStats = {
   critChance: 0.05, // 5%
   critDamage: 1.5, // 1.5x
   range: 0,
+  globalKnockback: 0,
 
   luck: 0,
   harvesting: 10, // Initial harvesting
   engineering: 0,
+  pickupRange: 0,
+  xpGain: 0,
+  shopDiscount: 0,
 
   meleeDmg: 0,
   rangedDmg: 0,
@@ -128,7 +132,7 @@ export const WEAPON_POOL: Partial<AmmoItem>[] = [
 // --- Item Data (Brotato Based) ---
 export const ITEM_POOL: ItemUpgrade[] = [
     // COMMON (Tier 1)
-    { name: "外星舌头", description: "拾取范围 +30%", rarity: 'COMMON', stats: { /* pickupRange: 0.3 */ } }, // Pickup Range logic not fully impl, skipping stat for now or adding dummy
+    { name: "外星舌头", description: "拾取范围 +30%", rarity: 'COMMON', stats: { pickupRange: 0.3 } },
     { name: "外星蠕虫", description: "+2 生命再生, +3 最大生命, 消耗品回复量 -1", rarity: 'COMMON', stats: { hpRegen: 2, maxHp: 3 } },
     { name: "小象", description: "拾取材料时 10% 概率造成伤害", rarity: 'COMMON', stats: {} },
     { name: "小壁虎", description: "+15% 概率吸附材料, -1% 窃取", rarity: 'COMMON', stats: { lifeSteal: -0.01 } },
@@ -137,12 +141,12 @@ export const ITEM_POOL: ItemUpgrade[] = [
     { name: "无檐便帽", description: "+4% 速度, -6 范围", rarity: 'COMMON', stats: { speed: 4, range: -6 } },
     { name: "开水", description: "+2 元素伤害, -1 最大生命", rarity: 'COMMON', stats: { elementalDmg: 2, maxHp: -1 } },
     { name: "书", description: "+1 工程学", rarity: 'COMMON', stats: { engineering: 1 } },
-    { name: "拳击手套", description: "+3 击退", rarity: 'COMMON', stats: {} }, // Knockback stat on player not fully impl, affects logic if added
+    { name: "拳击手套", description: "+3 击退", rarity: 'COMMON', stats: { globalKnockback: 3 } },
     { name: "破嘴", description: "+5 最大生命, -1 再生", rarity: 'COMMON', stats: { maxHp: 5, hpRegen: -1 } },
     { name: "蝴蝶", description: "+2% 窃取, -1 元素", rarity: 'COMMON', stats: { lifeSteal: 0.02, elementalDmg: -1 } },
     { name: "蛋糕", description: "+3 最大生命, -1% 伤害", rarity: 'COMMON', stats: { maxHp: 3, damagePercent: -1 } },
     { name: "咖啡", description: "+10% 攻速, -2% 伤害", rarity: 'COMMON', stats: { attackSpeed: 10, damagePercent: -2 } },
-    { name: "优惠券", description: "商店价格 -5%", rarity: 'COMMON', stats: {} }, // Shop logic needs update for this
+    { name: "优惠券", description: "商店价格 -5%", rarity: 'COMMON', stats: { shopDiscount: 0.05 } },
     { name: "赛博球", description: "25% 概率击杀造成伤害", rarity: 'COMMON', stats: {} },
     { name: "炸药", description: "+15% 爆炸伤害", rarity: 'COMMON', stats: {} },
     { name: "化肥", description: "+8 收获, -1 近战", rarity: 'COMMON', stats: { harvesting: 8, meleeDmg: -1 } },
@@ -158,7 +162,7 @@ export const ITEM_POOL: ItemUpgrade[] = [
     { name: "酸", description: "+8 最大生命, -4% 闪避", rarity: 'RARE', stats: { maxHp: 8, dodge: -0.04 } },
     { name: "外星眼", description: "周期性发射外星眼", rarity: 'RARE', stats: {} },
     { name: "旗帜", description: "+20 范围, +10% 攻速, -2% 窃取", rarity: 'RARE', stats: { range: 20, attackSpeed: 10, lifeSteal: -0.02 } },
-    { name: "黑带", description: "+15% 经验, +3 近战, -8 幸运", rarity: 'RARE', stats: { meleeDmg: 3, luck: -8 } }, // xpGain not in stats yet
+    { name: "黑带", description: "+15% 经验, +3 近战, -8 幸运", rarity: 'RARE', stats: { meleeDmg: 3, luck: -8, xpGain: 0.15 } },
     { name: "眼罩", description: "+5% 暴击, +5% 闪避, -15 范围", rarity: 'RARE', stats: { critChance: 0.05, dodge: 0.05, range: -15 } },
     { name: "篝火", description: "+2 元素, +2 再生, -2% 速度", rarity: 'RARE', stats: { elementalDmg: 2, hpRegen: 2, speed: -2 } },
     { name: "齿轮", description: "+4 工程学, -4% 伤害", rarity: 'RARE', stats: { engineering: 4, damagePercent: -4 } },

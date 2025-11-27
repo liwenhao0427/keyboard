@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { PlayerStats } from '../types';
-import { Heart, Zap, Shield, Swords, Crosshair, Wind, Clover, ChevronLeft, Menu } from 'lucide-react';
+import { Heart, Zap, Shield, Swords, Crosshair, Wind, Clover, ChevronLeft, Menu, Magnet, GraduationCap } from 'lucide-react';
 
 interface HUDProps {
   stats: PlayerStats;
@@ -79,6 +79,8 @@ export const HUD: React.FC<HUDProps> = ({ stats, waveTime, currentWave }) => {
                      <StatRow icon={Wind} label="Speed" value={`${stats.speed}%`} color="text-cyan-400" />
                      <StatRow icon={Clover} label="Luck" value={stats.luck} color="text-green-400" />
                      <StatRow icon={Heart} label="Regen" value={`${stats.hpRegen}/5s`} color="text-pink-400" />
+                     <StatRow icon={Magnet} label="Pickup" value={`+${(stats.pickupRange*100).toFixed(0)}%`} color="text-indigo-400" />
+                     <StatRow icon={GraduationCap} label="XP Gain" value={`+${(stats.xpGain*100).toFixed(0)}%`} color="text-purple-400" />
                 </div>
             </div>
         </div>

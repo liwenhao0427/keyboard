@@ -48,11 +48,15 @@ export interface PlayerStats {
   critChance: number; // %
   critDamage: number; // Multiplier (default 1.5x)
   range: number; // Added to base weapon range
+  globalKnockback: number; // Flat add to knockback
 
   // Utility
   luck: number; // Affects shop rarity & loot drops
   harvesting: number; // Gold/XP gain at end of wave
   engineering: number; // Scaler for engineering structures
+  pickupRange: number; // % increase to loot pickup radius
+  xpGain: number; // % increase to XP gained
+  shopDiscount: number; // % discount on shop items
 
   // Class Specific (Flat Bonuses)
   meleeDmg: number;
