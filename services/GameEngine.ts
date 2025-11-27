@@ -742,6 +742,8 @@ export class GameEngine {
               this.ctx.globalAlpha = 1.0;
           }
 
+          this.ctx.fillStyle = 'white';
+
           this.ctx.font = '48px Arial';
           this.ctx.textAlign = 'center';
           this.ctx.textBaseline = 'middle';
